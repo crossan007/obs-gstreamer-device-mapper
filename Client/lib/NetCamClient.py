@@ -41,8 +41,9 @@ class NetCamClient():
         len_sent = s.send(mesbytes)
         response = s.recv(2048).decode('UTF-8')
         print(response)
-        self.coreStreamer = GSTInstance(response,self.loop)
         s.close()
+        self.coreStreamer = GSTInstance(response,self.loop)
+        
 
     def run(self):
         self.loop = GObject.MainLoop()
