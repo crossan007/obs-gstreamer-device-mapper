@@ -1,4 +1,4 @@
-from gi.repository import Gst
+from gi.repository import Gst,GObject
 
 class GSTInstance():
     pipeline = 0
