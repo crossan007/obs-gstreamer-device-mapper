@@ -24,6 +24,7 @@ class GSTInstance():
         err, dbg = msg.parse_error()
         print("ERROR:", msg.src.get_name(), ":", err.message)
         print("Debug info:", dbg)
+        self.end()
 
 
     def on_eos(self,bus,msg):
@@ -43,3 +44,4 @@ class GSTInstance():
     def end(self):
         print('Shutting down GSTInstance')
         self.pipeline.set_state(Gst.State.NULL)
+        GObject.MainLoop().quit()
