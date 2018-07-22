@@ -44,6 +44,7 @@ class NetCamClient():
         s.close()
 
     def run(self):
+        global loop
         loop = GObject.MainLoop()
         while True: # not self.shouldExit:
             try:
@@ -52,6 +53,7 @@ class NetCamClient():
             except Exception as ex:
                 print("Exception: " + ex)
                 loop.quit()
+                print("loop quit")
             print("Restarting NetCamClient")
         
     def get_self_id(self):
@@ -83,6 +85,7 @@ class NetCamClient():
 
 
     def end(self):
+        global loop
         self.shouldExit = True
-        GObject.MainLoop().quit()
+        loop.quit()
         
