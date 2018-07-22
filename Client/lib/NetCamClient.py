@@ -13,6 +13,7 @@ class NetCamClient():
     cam_id = 0
     coreStreamer = 0
     shouldExit = False
+    loop = 0
 
     def __init__(self):
         self.cam_id = self.get_self_id()
@@ -40,20 +41,17 @@ class NetCamClient():
         len_sent = s.send(mesbytes)
         response = s.recv(2048).decode('UTF-8')
         print(response)
-        self.coreStreamer = GSTInstance(response)
+        self.coreStreamer = GSTInstance(response,self.loop)
         s.close()
 
     def run(self):
-        global loop
-        loop = GObject.MainLoop()
+        self.loop = GObject.MainLoop()
         while True: # not self.shouldExit:
             try:
                 self.wait_for_config()
-                loop.run()
+                self.loop.run()
             except Exception as ex:
-                print("Exception: " + ex)
-                loop.quit()
-                print("loop quit")
+                print("Outer Exception: " + ex)
             print("Restarting NetCamClient")
         
     def get_self_id(self):

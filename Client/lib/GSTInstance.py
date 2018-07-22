@@ -2,8 +2,10 @@ from gi.repository import Gst,GObject
 
 class GSTInstance():
     pipeline = 0
+    loop =0
 
-    def __init__(self, pipelineText, clock=None):
+    def __init__(self, pipelineText, clock=None, mainLoop):
+        self.loop = mainLoop
         print("Starting GSTInstance local pipeline: {pipelineText}".format(pipelineText=pipelineText))
         
         self.pipeline = Gst.parse_launch(pipelineText)
@@ -43,4 +45,4 @@ class GSTInstance():
 
     def end(self):
         print('Shutting down GSTInstance')
-        raise Exception("Shutdown")
+        self.loop.quit()
