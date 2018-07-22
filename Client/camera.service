@@ -1,0 +1,13 @@
+[Unit]
+Description = PiCamFleetMapper
+#After=systemd-timesyncd
+
+[Service]
+Type = simple
+WorkingDirectory = /home/pi/obs-gstreamer-device-mapper/Client
+ExecStart = /home/pi/obs-gstreamer-device-mapper/Client/obs-gstreamer-client.py
+RestartSec = 1s
+StartLimitInterval = 0
+
+[Install]
+WantedBy = multi-user.target
