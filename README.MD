@@ -7,6 +7,8 @@ When remote devices receive the presence advertisment, they connect to the OBS s
 The clients supply their device id, and OBS server cross-reference the device id with the pre-configured list.
 If a matching device id is found, then the pipeline is executed on the remote device
 
+This depends on https://github.com/fzwoch/obs-gstreamer/
+
 ## Sources Editor
 Many different devices can be configured in the Script's properties pane:
 ![image](https://user-images.githubusercontent.com/11679900/43042292-f008424c-8d47-11e8-846f-1ef09ee0a13a.png)
