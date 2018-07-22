@@ -1,5 +1,11 @@
 # Overview
-Provides an in-application UI to manage remote GStreamer pipeline, and map the pipeline into OBS sources:
+Provides an in-application UI to manage remote GStreamer pipeline, and map the pipeline into OBS sources.
+
+A backgroun daemon runs inside the OBS script host.  This daemon advertises the presence of the OBS device server.
+
+When remote devices receive the presence advertisment, they connect to the OBS server.
+The clients supply their device id, and OBS server cross-reference the device id with the pre-configured list.
+If a matching device id is found, then the pipeline is executed on the remote device
 
 ## Sources Editor
 Many different devices can be configured in the Script's properties pane:
