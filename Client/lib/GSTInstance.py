@@ -44,4 +44,4 @@ class GSTInstance():
     def end(self):
         print('Shutting down GSTInstance')
         self.pipeline.set_state(Gst.State.NULL)
-        GObject.MainLoop().quit()
+        raise Exception("Shutdown")
