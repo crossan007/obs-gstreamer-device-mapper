@@ -49,7 +49,9 @@ class NetCamClient():
         while True: # not self.shouldExit:
             try:
                 self.wait_for_config()
+                print("Running main loop")
                 self.loop.run()
+                print("Main loop stopped")
             except Exception as ex:
                 print("Outer Exception: " + ex)
             print("Restarting NetCamClient")
