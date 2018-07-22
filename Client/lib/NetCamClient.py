@@ -44,13 +44,14 @@ class NetCamClient():
         s.close()
 
     def run(self):
+        loop = GObject.MainLoop()
         while True: # not self.shouldExit:
             try:
                 self.wait_for_config()
-                GObject.MainLoop().run()
+                loop.run()
             except Exception as ex:
                 print("Exception: " + ex)
-                GObject.MainLoop().quit()
+                loop.quit()
             print("Restarting NetCamClient")
         
     def get_self_id(self):
