@@ -8,7 +8,7 @@ class NetCamClientHandler(socketserver.BaseRequestHandler):
     device_supplied_id =''
     pipeline = ''
     def __init__(self, request, client_address, server):
-        self.video_port = server.clients_connected -1 + server.base_port # this could be hardcoded to MAC<->Port correlation
+        self.video_port = server.clients_connected -1 + server.base_port
         self.plugin_settings = server.plugin_settings
         socketserver.BaseRequestHandler.__init__(self, request,
                                                  client_address,
@@ -29,7 +29,7 @@ class NetCamClientHandler(socketserver.BaseRequestHandler):
                 print("{device_id}: {pipeline}".format(device_id=device_id,pipeline=pipeline))
         if self.device_supplied_id in  self.devices:
             obs.script_log(obs.LOG_INFO,"Device entry found for {device_id}".format(device_id=self.device_supplied_id))
-            self.pipeline =  self.devices[self.device_supplied_id] #"videotestsrc ! matroskamux ! queue ! tcpclientsink host=127.0.0.1 port=8675"
+            self.pipeline =  self.devices[self.device_supplied_id] +" matroskamux name=mux ! queue ! tcpclientsink host=127.0.0.1 port={port}".format(port=self.video_port)
         else:
             obs.script_log(obs.LOG_INFO,"No device entry for {device_id}".format(device_id=self.device_supplied_id))
         return
@@ -59,7 +59,7 @@ class NetCamClientHandler(socketserver.BaseRequestHandler):
         self.find_obs_device_pipeline()
         if self.pipeline : # we know about this device
             obs.script_log(obs.LOG_INFO,"Config found for {device_id}".format(device_id=self.device_supplied_id))
-            self.update_gst_source(self.device_supplied_id,"tcpserversrc host=127.0.0.1 port=8675 ! queue ! matroskademux ! tee name=t t. ! video.")
+            self.update_gst_source(self.device_supplied_id,"tcpserversrc host=127.0.0.1 port={port} ! queue ! matroskademux ! tee name=t t. ! video.".format(port=self.video_port))
             time.sleep(1)
             self.signal_client_start()
           

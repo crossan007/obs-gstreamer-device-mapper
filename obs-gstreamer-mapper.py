@@ -42,7 +42,8 @@ def script_description():
 	"List entries are in the format:\n"
 	"<DeviceID>:<RemoteGStreamerPipeline>\n\n"
 	
-	"All remote pipelines must output to .video and .audio\n\n"
+	"All remote pipelines must output to .mux\n\n"
+	"Example: 08:00:27:c5:f3:c1~videotestsrc pattern=18 ! mux.\n\n"
 	"Source matching <DeviceID> must exist"
 	)
 
@@ -56,13 +57,12 @@ def script_load(settings):
 	ClientConfigurationServerThread =Thread(target=myserver.serve_forever)
 	ClientConfigurationServerThread.daemon = True  # don't allow this thread to capture the keyboard interrupt
 	ClientConfigurationServerThread.start()
-	obs.script_log(obs.LOG_INFO,"test")
 	
 
 def script_unload():
-	obs.script_log(obs.LOG_INFO,"test")
-	#AdvertismentServiceThread.stop()
-	#ClientConfigurationServerThread.shutdown()
+	obs.script_log(obs.LOG_INFO,"Shutting down obs gstreamer mapper")
+	AdvertismentServiceThread.stop()
+	ClientConfigurationServerThread.shutdown()
 
 def script_defaults(settings):
 	obs.obs_data_set_default_int(settings, "interval", 30)
