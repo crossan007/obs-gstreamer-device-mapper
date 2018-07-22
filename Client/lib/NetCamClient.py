@@ -47,7 +47,6 @@ class NetCamClient():
         while True: # not self.shouldExit:
             try:
                 self.wait_for_config()
-                self.start_video_stream()
                 GObject.MainLoop().run()
             except Exception as ex:
                 print(ex)
@@ -79,16 +78,7 @@ class NetCamClient():
         
         return camid
 
-    def on_eos(self,bus,message):
-        print(message)
-        self.coreStreamer.end()
-        GObject.MainLoop().quit()
 
-    def start_video_stream(self):
-         #, core_clock)
-        self.coreStreamer.pipeline.bus.add_signal_watch()
-        self.coreStreamer.pipeline.bus.connect("message::eos",self.on_eos)
-        self.coreStreamer.pipeline.bus.connect("message::error",self.on_eos)
 
     def end(self):
         self.shouldExit = True

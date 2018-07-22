@@ -15,7 +15,7 @@ class NetCamMasterAdvertisementService(Thread):
     def run(self):
         while self.should_continue:
             self.socket.sendto(bytes("Hello",'UTF-8'), ('<broadcast>', 54545))
-            time.sleep(5)
+            time.sleep(.5)
 
     def stop(self):
         self.socket.close()

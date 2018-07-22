@@ -24,17 +24,21 @@ class GSTInstance():
         err, dbg = msg.parse_error()
         print("ERROR:", msg.src.get_name(), ":", err.message)
         print("Debug info:", dbg)
+
+
     def on_eos(self,bus,msg):
         print("End-Of-Stream reached")
-        self.playbin.set_state(Gst.State.READY)
+        #self.pipeline.set_state(Gst.State.READY)
+
     def on_state_changed(self,bus,msg):
         print("State Changed")
         old, new, pending = msg.parse_state_changed()
         print("State changed from {0} to {1}".format(
             Gst.Element.state_get_name(old), Gst.Element.state_get_name(new)))
+
     def on_application_message(self,bus,msg):
         print("Application Message")
-        
+
 
     def end(self):
         print('Shutting down GSTInstance')

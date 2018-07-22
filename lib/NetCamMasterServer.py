@@ -10,10 +10,11 @@ class NetCamMasterServer(socketserver.TCPServer):
     core_start_port = 10004
 
     def __init__(self, server_address,
-                 handler_class,
+                 handler_class,plugin_settings
                  ):
         self.logger = logging.getLogger('EchoServer')
         self.logger.debug('__init__')
+        self.plugin_settings = plugin_settings
         global config
         socketserver.TCPServer.__init__(self, server_address,
                                         handler_class)

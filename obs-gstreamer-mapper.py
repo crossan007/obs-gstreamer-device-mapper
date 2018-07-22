@@ -12,14 +12,6 @@ source_name = ""
 
 # ------------------------------------------------------------
 
-def update_gst_source(source_name, pipeline):
-	source = obs.obs_get_source_by_name(source_name)
-	settings = obs.obs_data_create()
-	obs.obs_data_set_string(settings, "pipeline", pipeline)
-	obs.obs_source_update(source, settings)
-	obs.obs_data_release(settings)
-	obs.obs_source_release(source)
-
 def update_text():
 	global url
 	global interval
@@ -60,31 +52,17 @@ def script_load(settings):
 	AdvertismentServiceThread = NetCamMasterAdvertisementService('0.0.0.0',54545)
 	AdvertismentServiceThread.daemon = True
 	AdvertismentServiceThread.start()
-	myserver = NetCamMasterServer(('0.0.0.0',5455),NetCamClientHandler)
+	myserver = NetCamMasterServer(('0.0.0.0',5455),NetCamClientHandler,settings)
 	ClientConfigurationServerThread =Thread(target=myserver.serve_forever)
 	ClientConfigurationServerThread.daemon = True  # don't allow this thread to capture the keyboard interrupt
 	ClientConfigurationServerThread.start()
 	obs.script_log(obs.LOG_INFO,"test")
-	update_gst_source("GStreamer Source","tcpserversrc host=0.0.0.0 port=8675 ! matroskademux ! tee name=t t. ! video.")
+	
 
 def script_unload():
 	obs.script_log(obs.LOG_INFO,"test")
 	#AdvertismentServiceThread.stop()
 	#ClientConfigurationServerThread.shutdown()
-
-def script_update(settings):
-	global url
-	global interval
-	global source_name
-
-	url         = obs.obs_data_get_string(settings, "url")
-	interval    = obs.obs_data_get_int(settings, "interval")
-	source_name = obs.obs_data_get_string(settings, "source")
-
-	obs.timer_remove(update_text)
-
-	if url != "" and source_name != "":
-		obs.timer_add(update_text, interval * 1000)
 
 def script_defaults(settings):
 	obs.obs_data_set_default_int(settings, "interval", 30)
