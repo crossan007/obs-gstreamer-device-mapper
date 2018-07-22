@@ -4,7 +4,7 @@ class GSTInstance():
     pipeline = 0
     loop =0
 
-    def __init__(self, pipelineText, clock=None, mainLoop):
+    def __init__(self, pipelineText, mainLoop, clock=None):
         self.loop = mainLoop
         print("Starting GSTInstance local pipeline: {pipelineText}".format(pipelineText=pipelineText))
         
