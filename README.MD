@@ -14,8 +14,10 @@ Many different devices can be configured in the Script's properties pane:
 Devices are configured in the format `<DeviceID>~<GStreamerPipeline>`
 So, the following would remotely execute `videotestsrc` and map the pipeline to the local OBS source named `08:00:27:c5:f3:c1`:
 ```
-08:00:27:c5:f3:c1~videotestsrc pattern=18 ! matroskamux ! queue ! tcpclientsink host=127.0.0.1 port=8675
+08:00:27:c5:f3:c1~videotestsrc pattern=18
 ```
+
+Muxing, transport, and OBS source mapping are handled automatically.  Simply pipe your sources to `.video` and `.audio`
 
 
 ## Auto Mapping
