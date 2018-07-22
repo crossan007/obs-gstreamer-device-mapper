@@ -71,5 +71,5 @@ def script_properties():
 	props = obs.obs_properties_create()
 
 	obs.obs_properties_add_editable_list(props, "list", "GStreamer Pipelines List", obs.OBS_EDITABLE_LIST_TYPE_STRINGS,'','')
-
+	obs.obs_properties_add_text(props,"obs_ip_address","obs_ip_address", obs.OBS_TEXT_DEFAULT)
 	return props

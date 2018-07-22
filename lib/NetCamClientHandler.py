@@ -29,15 +29,13 @@ class NetCamClientHandler(socketserver.BaseRequestHandler):
                 print("{device_id}: {pipeline}".format(device_id=device_id,pipeline=pipeline))
         if self.device_supplied_id in  self.devices:
             obs.script_log(obs.LOG_INFO,"Device entry found for {device_id}".format(device_id=self.device_supplied_id))
-            self.pipeline =  self.devices[self.device_supplied_id] +" matroskamux name=mux ! queue ! tcpclientsink host=127.0.0.1 port={port}".format(port=self.video_port)
+            self.pipeline = self.devices[self.device_supplied_id] +" matroskamux name=mux ! queue ! tcpclientsink host={obs_ip_address} port={port}".format(port=self.video_port,obs_ip_address=self.obs_ip_address)
         else:
             obs.script_log(obs.LOG_INFO,"No device entry for {device_id}".format(device_id=self.device_supplied_id))
         return
     
     def update_gst_source(self,source_name, pipeline):
-        
         source = obs.obs_get_source_by_name(source_name)
-
         settings = obs.obs_data_create()
         obs.obs_data_set_string(settings, "pipeline", pipeline)
 
@@ -55,12 +53,14 @@ class NetCamClientHandler(socketserver.BaseRequestHandler):
     def handle(self):
         global config 
         self.device_supplied_id = self.request.recv(1024).strip().decode('UTF-8')
+        self.obs_ip_address = obs.obs_data_get_string(self.plugin_settings, "obs_ip_address")
         obs.script_log(obs.LOG_INFO,"Device requesting configuration: {device_id}".format(device_id=self.device_supplied_id))
         self.find_obs_device_pipeline()
         if self.pipeline : # we know about this device
             obs.script_log(obs.LOG_INFO,"Config found for {device_id}".format(device_id=self.device_supplied_id))
-            self.update_gst_source(self.device_supplied_id,"tcpserversrc host=127.0.0.1 port={port} ! queue ! matroskademux ! tee name=t t. ! video.".format(port=self.video_port))
-            time.sleep(1)
+            
+            self.update_gst_source(self.device_supplied_id,"tcpserversrc host=0.0.0.0 port={port} ! queue ! matroskademux ! tee name=t t. ! decodebin ! queue ! video.".format(port=self.video_port))
+            time.sleep(3)
             self.signal_client_start()
           
         else: # We don't know about this device
